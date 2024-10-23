@@ -1,0 +1,72 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<navigation xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--            xmlns:tools="http://schemas.android.com/tools"-->
+<!--            android:id="@+id/nav_graph"-->
+<!--            app:startDestination="@id/loadAppFragment">-->
+
+<!--    <fragment-->
+<!--            android:id="@+id/loadAppFragment"-->
+<!--            android:name="com.example.myapplication.fragment.LoadAppFragment"-->
+<!--            android:label="Load App"-->
+<!--            tools:layout="@layout/fragment_load_app"-->
+<!--    />-->
+
+<!--    <fragment-->
+<!--            android:id="@+id/statusAppFragment"-->
+<!--            android:name="com.example.myapplication.fragment.StatusAppFragment"-->
+<!--            android:label="Status App"-->
+<!--            tools:layout="@layout/fragment_status_app" />-->
+
+<!--    <fragment-->
+<!--            android:id="@+id/homeFragment"-->
+<!--            android:name="com.example.myapplication.fragment.HomeFragment"-->
+<!--            android:label="Home"-->
+<!--            tools:layout="@layout/fragment_home" />-->
+<!--</navigation>-->
+
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/loadAppFragment">
+
+    <!-- LoadAppFragment -->
+    <fragment
+            android:id="@+id/loadAppFragment"
+            android:name="com.example.myapplication.fragment.LoadAppFragment"
+            android:label="Load App"
+            tools:layout="@layout/fragment_load_app" >
+        <!-- Navigare către HomeFragment -->
+        <action
+                android:id="@+id/action_loadAppFragment_to_homeFragment"
+                app:destination="@id/homeFragment" />
+        <!-- Navigare către StatusAppFragment -->
+        <action
+                android:id="@+id/action_loadAppFragment_to_statusAppFragment"
+                app:destination="@id/statusAppFragment" />
+    </fragment>
+
+    <!-- StatusAppFragment -->
+    <fragment
+            android:id="@+id/statusAppFragment"
+            android:name="com.example.myapplication.fragment.StatusAppFragment"
+            android:label="Status App"
+            tools:layout="@layout/fragment_status_app">
+        <!-- Adaugă o acțiune de revenire la LoadAppFragment dacă vrei -->
+        <action
+                android:id="@+id/action_statusAppFragment_to_loadAppFragment"
+                app:destination="@id/loadAppFragment" />
+    </fragment>
+
+    <!-- HomeFragment -->
+    <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.example.myapplication.fragment.HomeFragment"
+            android:label="Home"
+            tools:layout="@layout/fragment_home" >
+    </fragment>
+</navigation>
+
+

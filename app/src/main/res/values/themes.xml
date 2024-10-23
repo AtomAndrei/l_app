@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication"/>
+
+    <!-- Tema pentru SplashScreen -->
+    <style name="Theme.MyApplication.Splash" parent="Theme.SplashScreen">
+        <!-- Personalizare SplashScreen -->
+        <item name="windowSplashScreenBackground">@color/purple_500</item> <!-- Fundal -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item> <!-- Logo-ul aplicației -->
+        <item name="postSplashScreenTheme">@style/Theme.MyApplication</item> <!-- Tema aplicației după SplashScreen -->
+    </style>
+</resources>
