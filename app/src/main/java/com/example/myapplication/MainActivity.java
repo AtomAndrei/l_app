@@ -28,8 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
-            Log.d(TAG, "Navigating to LoadAppFragment");
-            navController.navigate(R.id.loadAppFragment); // Navighează către LoadAppFragment
+            if (navController.getCurrentDestination() == null ||
+                    navController.getCurrentDestination().getId() != R.id.loadAppFragment) {
+                Log.d(TAG, "Navigating to LoadAppFragment");
+                navController.navigate(R.id.loadAppFragment);
+            }
         } else {
             Log.e(TAG, "NavHostFragment not found");
             throw new IllegalStateException("NavHostFragment not found");

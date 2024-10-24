@@ -1,12 +1,13 @@
 package com.example.myapplication.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.myapplication.NavigationTarget;
 import com.example.myapplication.R;
 import com.example.myapplication.model.StatusAppViewModel;
 
@@ -22,23 +25,30 @@ public class StatusAppFragment extends Fragment {
     private TextView statusTextView;
     private Button retryButton;
     private StatusAppViewModel viewModel;
-    private Handler handler = new Handler();
+    private static final String TAG = "StatusAppFragment";
+    private NavController navController;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_status_app, container, false);
+
+        // Inițializare NavController
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
         statusTextView = view.findViewById(R.id.statusTextView);
         retryButton = view.findViewById(R.id.retryButton);
 
         // Inițializare ViewModel
         viewModel = new ViewModelProvider(this).get(StatusAppViewModel.class);
+        Log.d(TAG, "ViewModel for StatusAppFragment initialized.");
 
         // Observă mesajul de reîncercare
         viewModel.getRetryMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String message) {
+                Log.d(TAG, "Retry message updated: " + message);
                 statusTextView.setText(message);
             }
         });
@@ -48,11 +58,16 @@ public class StatusAppFragment extends Fragment {
             @Override
             public void onChanged(Boolean isConnected) {
                 if (isConnected) {
-                    // Navighează către LoadAppFragment dacă avem internet
-                    NavController navController = Navigation.findNavController(requireView());
-                    navController.navigate(R.id.action_statusAppFragment_to_loadAppFragment);
+                    Log.d(TAG, "Internet connection is available. Navigating to LoadAppFragment.");
+                    try {
+                        // Navighează la LoadAppFragment dacă există conexiune
+                        navController.navigate(R.id.action_statusAppFragment_to_loadAppFragment);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error navigating to LoadAppFragment", e);
+                    }
                 } else {
-                    retryButton.setEnabled(true);  // Reenable butonul dacă nu este internet
+                    Log.w(TAG, "No internet connection available.");
+                    retryButton.setEnabled(true);  // Re-enable butonul dacă nu este internet
                 }
             }
         });
@@ -61,9 +76,9 @@ public class StatusAppFragment extends Fragment {
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Retry button clicked. Disabling button and checking internet connection.");
                 retryButton.setEnabled(false);
-                // Apelează metoda din ViewModel pentru a verifica conexiunea la internet
-                viewModel.checkInternetConnection(requireContext());  // Pasăm Context-ul aici
+                viewModel.checkInternetConnection(requireContext());
             }
         });
 
